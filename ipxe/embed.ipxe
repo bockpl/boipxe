@@ -1,4 +1,4 @@
 #!ipxe
 
 dhcp
-chain http://mfsmaster.dev.p.lodz.pl/boot.ipxe
+chain http://mfsmaster.dev.p.lodz.pl/boot.ipxe || shell
