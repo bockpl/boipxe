@@ -17,4 +17,4 @@ RUN (apk add --no-cache --virtual build-dependencies build-base perl git) \
   && (cd /; rm -rf /ipxe) \
   && (apk del --virtual build-dependencies build-base perl git)
 
-CMD "dnsmasq -C /etc/dnsmasq.conf -d"
+CMD "/usr/sbin/dnsmasq -C /etc/dnsmasq.conf -d"
