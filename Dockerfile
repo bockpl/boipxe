@@ -17,4 +17,12 @@ RUN (apk add --no-cache --virtual build-dependencies build-base perl git) \
   && (cd /; rm -rf /ipxe) \
   && (apk del --virtual build-dependencies build-base perl git)
 
-CMD ["/bin/sh","-c","/usr/sbin/dnsmasq -C /etc/dnsmasq.conf -d"]
+# Instalacja modulu httpd do busybox
+RUN apk add busybox-extras
+
+# Dodanie skryptu startowego
+ENV TEMPLATEDIR /srv/template
+ADD start.sh /start.sh
+
+ENTRYPOINT ["/start.sh"]
+#CMD ["/bin/sh","-c","/usr/sbin/dnsmasq -C /etc/dnsmasq.conf -d"]
