@@ -18,7 +18,16 @@ RUN (apk add --no-cache --virtual build-dependencies build-base perl git) \
   && (apk del --virtual build-dependencies build-base perl git)
 
 # Instalacja modulu httpd do busybox
-RUN apk add busybox-extras
+#RUN apk add busybox-extras
+#RUN apk add lighttpd
+RUN apk add nginx
+ADD nginx/nginx.conf /etc/nginx/nginx.conf
+ADD nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+
+# Instalacja i konfiguracja sshd do polaczen i synchronizacji rsync
+#RUN apk add openssh-server
+#RUN ssh-keygen -A
+#ADD ssh/id_rsa.pub /root/.ssh/authorized_keys
 
 # Dodanie skryptu startowego
 ENV TEMPLATEDIR /srv/template
