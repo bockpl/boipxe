@@ -23,6 +23,8 @@ trapSignal() {
 
 echo "Starting httpd..."
 if ! [ -d ${TEMPLATEDIR} ]; then mkdir -p ${TEMPLATEDIR}; fi
+# Korekta katalogu domowego serwera http
+sed -i -E "s/(^.*root )(.*)(;$)/\1${TEMPLATEDIR}\3/g" /etc/nginx/conf.d/default.conf
 #/bin/busybox-extras httpd -p 80 -h ${TEMPLATEDIR} -f -vvv &
 nginx
 echo "Starting dhcp and tftp..."
