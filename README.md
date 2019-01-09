@@ -7,7 +7,7 @@ Przykładowo jeśli VLAN na którym chcemy świadczyć usługi iPXE to 479 i jes
 docker network create -d macvlan --subnet 10.100.0.0/24 --gateway=10.100.0.1 -o parent=bond0.479 PXE_core
 
 Komenda uruchomienia kontenera w tym wypadku to:
-docker run -dt --network PXE_core -v /srv/tftp:/srv --name boipxe bockpl/boipxe
+docker run -dt --network PXE_core -v /srv/tftp:/srv/templetes --name boipxe bockpl/boipxe
 
 gdzie:
-   -v /srv/tftp:/srv - to mapowanie katalogu serwowanego przez http w celu zdalnego bootowania
+   -v /srv/tftp:/srv/templetes - to mapowanie katalogu serwowanego przez http w celu zdalnego bootowania
