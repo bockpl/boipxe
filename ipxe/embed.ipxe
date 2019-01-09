@@ -1,4 +1,6 @@
 #!ipxe
 
+# Konfiguracja sieci
 dhcp
+
 chain http://${next-server}/boot.ipxe || shell
