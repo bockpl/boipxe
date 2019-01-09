@@ -1,6 +1,7 @@
 #!ipxe
 
-# Konfiguracja sieci
+echo "Konfiguracja sieci..."
 dhcp
 
-chain http://${next-server}/boot.ipxe || shell
+echo "Chain http://${dhcp-server}/templates/CONFIGS/${hostname}/boot.ipxe"
+chain http://${dhcp-server}/templates/CONFIGS/${hostname}/boot.ipxe || shell
