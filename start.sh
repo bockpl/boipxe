@@ -23,8 +23,10 @@ trapSignal() {
 
 echo "Starting httpd..."
 # Korekta katalogu domowego serwera http
-sed -i -E "s/(^.*root )(.*)(;$)/\1${TEMPLATEDIR}\3/g" /etc/nginx/conf.d/default.conf
+#sed -i -E "s/(^.*root )(.*)(;$)/\1${TEMPLATEDIR}\3/g" /etc/nginx/conf.d/default.conf
 nginx
+echo "Starting open-sshd..."
+/usr/sbin/sshd
 echo "Starting dhcp and tftp..."
 /usr/sbin/dnsmasq -C /etc/dnsmasq.conf -d &
 

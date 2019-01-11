@@ -8,9 +8,9 @@ docker network create -d macvlan --subnet 10.100.0.0/24 --gateway=10.100.0.1 -o 
 
 Komenda uruchomienia kontenera w tym wypadku to:
 
-docker run -dt --network PXE_core -v /srv/tftp/templates:/srv/templates -v /srv/tftp/templates/boipxe/dnsmasq/dnsmasq:/srv/dnsmasq --privileged --name boipxe boipxe
+docker run -dt --network PXE_core -v /srv/tftp/templates:/srv/templates -v /srv/tftp/templates/CONFIGS/boipxePXECORE/etc:/srv/etc --privileged --name boipxe boipxe
 
 gdzie:
    -v /srv/tftp/templates:/srv/templetes - to mapowanie katalogu z obrazami (montowany z MFS-a) na katalog serwowany przez http w celu zdalnego bootowania
 
-   -v /srv/tftp/templates/boipxe/dnsmasq/dnsmasq:/srv/dnsmasq - to mapowanie katalogu z konfiguracją dnsmasq
+   -v -v /srv/tftp/templates/CONFIGS/boipxePXECORE/etc:/srv/etc - to mapowanie katalogu z konfiguracją kontenera
