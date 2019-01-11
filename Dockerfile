@@ -8,15 +8,14 @@ ENV CONFDIR $BASEDIR/etc
 ADD resolv.conf /etc/resolv.conf
 
 # Instalacja Dnsmasq
-RUN apk add --no-cache dnsmasq
+RUN apk --no-cache add dnsmasq
 ADD dnsmasq/dnsmasq_root.conf /etc/dnsmasq.conf
 ADD dnsmasq/dnsmasq.conf $CONFDIR/dnsmasq/dnsmasq.conf
 
 # Instalacja iPXE
 ADD ipxe/embed.ipxe /tmp/embed.ipxe
-RUN apk add --no-cache --virtual build-dependencies build-base perl git
-
-RUN git clone git://git.ipxe.org/ipxe.git \
+RUN apk --update --no-cache add --virtual .build-deps build-base perl git \
+  && git clone git://git.ipxe.org/ipxe.git \
   && cd ipxe/src \
   && echo "make -j$(nproc) bin-x86_64-efi/ipxe.efi EMBED=/tmp/embed.ipxe" \
   && make -j$(nproc) bin-x86_64-efi/ipxe.efi EMBED=/tmp/embed.ipxe \
@@ -24,23 +23,26 @@ RUN git clone git://git.ipxe.org/ipxe.git \
   && rm /tmp/embed.ipxe \
   && cd / \
   && rm -rf /ipxe \
-  && apk del -r build-dependencies build-base perl git
+  && apk del .build-deps
 
 # Instalacja modulu httpd do busybox
-#RUN apk add busybox-extras
-#RUN apk add lighttpd
-RUN apk add nginx
+#RUN apk --no-cache add busybox-extras
+#RUN apk --no-cache add lighttpd
+
 ADD nginx $CONFDIR/nginx
-RUN rm -rf /etc/nginx && ln -sf $CONFDIR/nginx /etc/
+RUN apk add --no-cache nginx \
+  && rm -rf /etc/nginx \
+  && ln -sf $CONFDIR/nginx /etc/
 
 # Instalacja i konfiguracja sshd
 ADD ssh/sshd_config $CONFDIR/ssh/sshd_config
 ADD ssh/authorized_keys $CONFDIR/ssh/authorized_keys
-RUN ln -sf $CONFDIR/ssh /etc/ssh
-RUN apk add openssh-server \
+RUN ln -sf $CONFDIR/ssh /etc/ssh \
+  && apk add --no-cache openssh-server \
   && ssh-keygen -A \
-  && apk add openssh-client \
-  && mkdir /root/.ssh && ln -sf $CONFDIR/ssh/authorized_keys /root/.ssh/authorized_keys
+  && apk add --no-cache openssh-client \
+  && mkdir /root/.ssh \
+  && ln -sf $CONFDIR/ssh/authorized_keys /root/.ssh/authorized_keys
 
 # Dodanie skryptu startowego
 ENV TEMPLATEDIR /srv/templates
