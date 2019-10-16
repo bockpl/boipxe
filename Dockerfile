@@ -7,6 +7,9 @@ ENV CONFDIR $BASEDIR/etc
 # Konfiguracja DNS
 ADD resolv.conf /etc/resolv.conf
 
+#instalacja tcpdump
+RUN apk --no-cache add tcpdump
+
 # Instalacja Dnsmasq
 RUN apk --no-cache add dnsmasq
 ADD dnsmasq/dnsmasq_root.conf /etc/dnsmasq.conf
