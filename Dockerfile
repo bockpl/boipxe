@@ -15,7 +15,7 @@ ADD dnsmasq/dnsmasq.conf $CONFDIR/dnsmasq/dnsmasq.conf
 # Instalacja iPXE
 ADD ipxe/embed.ipxe /tmp/embed.ipxe
 RUN apk --update --no-cache add --virtual .build-deps build-base perl git \
-  && git clone git://git.ipxe.org/ipxe.git \
+  && git clone http://git.ipxe.org/ipxe.git \
   && cd ipxe/src \
   && echo "make -j$(nproc) bin-x86_64-efi/ipxe.efi EMBED=/tmp/embed.ipxe" \
   && make -j$(nproc) bin-x86_64-efi/ipxe.efi EMBED=/tmp/embed.ipxe \
