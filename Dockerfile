@@ -42,7 +42,10 @@ RUN ln -sf $CONFDIR/ssh /etc/ssh \
   && ssh-keygen -A \
   && apk add --no-cache openssh-client \
   && mkdir /root/.ssh \
-  && ln -sf $CONFDIR/ssh/authorized_keys /root/.ssh/authorized_keys
+  && ln -sf $CONFDIR/ssh/authorized_keys /root/.ssh/authorized_keys \
+  && chmod 600 $CONFDIR/ssh/authorized_keys \
+  && chmod 700 /root/.ssh \
+  && sed -i s/root:!:/root::/g /etc/shadow
 
 # Dodanie skryptu startowego
 ENV TEMPLATEDIR /srv/templates
