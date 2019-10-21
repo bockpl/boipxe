@@ -26,7 +26,14 @@ nginx
 echo "Starting open-sshd..."
 /usr/sbin/sshd
 echo "Starting dhcp and tftp..."
-/usr/sbin/dnsmasq -C /etc/dnsmasq.conf -d &
+##
+# I also needed to add the --dhcp-broadcast flag to dnsmasq 
+# within the container to get it to actually broadcast DHCPOFFER messages on the network.
+# For some reason, dnsmasq was trying to unicast the DHCPOFFER messages,
+# and it was using ARP to try to get an address that had not yet been assigned.
+#
+##
+/usr/sbin/dnsmasq -C /etc/dnsmasq.conf -d --dhcp-broadcast &
 
 echo "[hit enter key to exit] or run 'docker stop <container>'"
 read
