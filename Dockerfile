@@ -18,6 +18,10 @@ ADD ipxe/embed_debug.ipxe /tmp/embed_debug.ipxe
 RUN apk --update --no-cache add --virtual .build-deps build-base perl git \
   && git clone http://git.ipxe.org/ipxe.git \
   && cd ipxe/src \
+  && sed -Ei 's/\/\/\#define PCI_CMD/\#define PCI_CMD/g' config/general.h \
+  && sed -Ei 's/\/\/\#define VLAN_CMD/\#define VLAN_CMD/g' config/general.h \
+  && sed -Ei 's/\/\/\#define PING_CMD/\#define PING_CMD/g' config/general.h \
+  && sed -Ei 's/\/\/\IPSTAT_CMD/\IPSTAT_CMD/g' config/general.h \
   && echo "make -j$(nproc) bin-x86_64-efi/ipxe.efi EMBED=/tmp/embed.ipxe" \
   && make -j$(nproc) bin-x86_64-efi/ipxe.efi EMBED=/tmp/embed.ipxe \
   && cp -a /ipxe/src/bin-x86_64-efi/ipxe.efi $BASEDIR/ \
