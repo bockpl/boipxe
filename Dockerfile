@@ -14,13 +14,19 @@ ADD dnsmasq/dnsmasq.conf $CONFDIR/dnsmasq/dnsmasq.conf
 
 # Instalacja iPXE
 ADD ipxe/embed.ipxe /tmp/embed.ipxe
+ADD ipxe/embed_debug.ipxe /tmp/embed_debug.ipxe
 RUN apk --update --no-cache add --virtual .build-deps build-base perl git \
   && git clone http://git.ipxe.org/ipxe.git \
   && cd ipxe/src \
   && echo "make -j$(nproc) bin-x86_64-efi/ipxe.efi EMBED=/tmp/embed.ipxe" \
   && make -j$(nproc) bin-x86_64-efi/ipxe.efi EMBED=/tmp/embed.ipxe \
   && cp -a /ipxe/src/bin-x86_64-efi/ipxe.efi $BASEDIR/ \
+  && make clean \
+  && echo "make -j$(nproc) bin-x86_64-efi/ipxe.efi EMBED=/tmp/embed_debug.ipxe" \
+  && make -j$(nproc) bin-x86_64-efi/ipxe.efi EMBED=/tmp/embed_debug.ipxe \
+  && cp -a /ipxe/src/bin-x86_64-efi/ipxe.efi $BASEDIR/ipxe_debug.efi \
   && rm /tmp/embed.ipxe \
+  && rm /tmp/embed_debug.ipxe \
   && cd / \
   && rm -rf /ipxe \
   && apk del .build-deps

@@ -1,0 +1,7 @@
+#!ipxe
+
+echo "Enter debug ipxe..."
+echo "Default file execute belowing commands"
+echo "dhcp"
+echo "chain http://${dhcp-server}/templates/CONFIGS/${hostname}/boot.ipxe || shell"
+shell
