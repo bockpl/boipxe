@@ -3,6 +3,7 @@ LABEL maintainer="seweryn.sitarski@p.lodz.pl"
 
 ENV BASEDIR /srv
 ENV CONFDIR $BASEDIR/etc
+ENV IPXEVER v1.20.1
 
 # Konfiguracja DNS
 ADD resolv.conf /etc/resolv.conf
@@ -16,7 +17,7 @@ ADD dnsmasq/dnsmasq.conf $CONFDIR/dnsmasq/dnsmasq.conf
 ADD ipxe/embed.ipxe /tmp/embed.ipxe
 ADD ipxe/embed_debug.ipxe /tmp/embed_debug.ipxe
 RUN apk --update --no-cache add --virtual .build-deps build-base perl git \
-  && git clone http://git.ipxe.org/ipxe.git \
+  && git clone --branch $IPXEVER http://git.ipxe.org/ipxe.git \
   && cd ipxe/src \
   && sed -Ei 's/\/\/\#define PCI_CMD/\#define PCI_CMD/g' config/general.h \
   && sed -Ei 's/\/\/\#define VLAN_CMD/\#define VLAN_CMD/g' config/general.h \
