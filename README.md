@@ -14,3 +14,5 @@ gdzie:
    -v /srv/tftp/templates:/srv/templetes - to mapowanie katalogu z obrazami (montowany z MFS-a) na katalog serwowany przez http w celu zdalnego bootowania
 
    -v -v /srv/tftp/templates/CONFIGS/boipxePXECORE/etc:/srv/etc - to mapowanie katalogu z konfiguracją kontenera
+
+
