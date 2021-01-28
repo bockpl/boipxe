@@ -23,8 +23,6 @@ trapSignal() {
 
 echo "Starting httpd..."
 nginx
-echo "Starting open-sshd..."
-/usr/sbin/sshd
 echo "Starting dhcp and tftp..."
 /usr/sbin/dnsmasq -C /etc/dnsmasq.conf -d &
 

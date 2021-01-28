@@ -53,19 +53,6 @@ RUN apk add --no-cache nginx \
   && rm -rf /etc/nginx \
   && ln -sf $CONFDIR/nginx /etc/
 
-# Instalacja i konfiguracja sshd
-ADD ssh/sshd_config $CONFDIR/ssh/sshd_config
-ADD ssh/authorized_keys $CONFDIR/ssh/authorized_keys
-RUN ln -sf $CONFDIR/ssh /etc/ssh \
-  && apk add --no-cache openssh-server \
-  && ssh-keygen -A \
-  && apk add --no-cache openssh-client \
-  && mkdir /root/.ssh \
-  && ln -sf $CONFDIR/ssh/authorized_keys /root/.ssh/authorized_keys \
-  && chmod 600 $CONFDIR/ssh/authorized_keys \
-  && chmod 700 /root/.ssh \
-  && sed -i s/root:!:/root::/g /etc/shadow
-
 # Dodanie skryptu startowego
 ENV TEMPLATEDIR /srv/templates
 ADD start.sh /start.sh
