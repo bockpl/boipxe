@@ -1,9 +1,9 @@
-FROM alpine
+FROM alpine:3.13.0
 LABEL maintainer="seweryn.sitarski@p.lodz.pl"
 
 ENV BASEDIR /srv
 ENV CONFDIR $BASEDIR/etc
-ENV IPXEVER v1.20.1
+ENV IPXEVER v1.21.1
 
 # Konfiguracja DNS
 ADD resolv.conf /etc/resolv.conf
