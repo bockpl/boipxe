@@ -1,19 +1,11 @@
 FROM alpine:3.13.0
-LABEL maintainer="seweryn.sitarski@p.lodz.pl"
+LABEL maintainer="wojciech.gabryjelski@p.lodz.pl"
 
 ENV BASEDIR /srv
 ENV CONFDIR $BASEDIR/etc
 ENV IPXEVER v1.21.1
 
 # Konfiguracja DNS
-ADD resolv.conf /etc/resolv.conf
-
-# Instalacja Dnsmasq
-RUN apk --no-cache add dnsmasq
-ADD dnsmasq/dnsmasq_root.conf /etc/dnsmasq.conf
-ADD dnsmasq/dnsmasq.conf $CONFDIR/dnsmasq/dnsmasq.conf
-
-# Instalacja iPXE
 ADD ipxe/embed.ipxe /tmp/embed.ipxe
 ADD ipxe/embed_debug.ipxe /tmp/embed_debug.ipxe
 RUN apk --update --no-cache add --virtual .build-deps build-base perl git \
@@ -44,14 +36,31 @@ RUN apk --update --no-cache add --virtual .build-deps build-base perl git \
   && rm -rf /ipxe \
   && apk del .build-deps
 
-# Instalacja modulu httpd do busybox
-#RUN apk --no-cache add busybox-extras
-#RUN apk --no-cache add lighttpd
+ADD resolv.conf /etc/resolv.conf
+
+# Instalacja utils i dnsmasq 
+RUN apk --no-cache add \
+# bash \
+ tcpdump \
+# iproute2-ss \
+# bind-tools \
+ dnsmasq
+ADD dnsmasq/dnsmasq.conf $CONFDIR/dnsmasq/dnsmasq.conf
+ADD dnsmasq/dnsmasq_root.conf /etc/dnsmasq.conf
 
 ADD nginx $CONFDIR/nginx
 RUN apk add --no-cache nginx \
   && rm -rf /etc/nginx \
   && ln -sf $CONFDIR/nginx /etc/
+
+# Instalacja monit
+RUN apk add --no-cache monit \
+  && rm -rf /etc/monit.d/*
+ADD monit/monitrc /etc/monitrc
+ADD monit/*.conf /etc/monit.d/
+ADD monit/*.sh /etc/monit.d/
+RUN chmod 700 /etc/monitrc
+RUN chmod 700 /etc/monit.d/*.sh
 
 # Dodanie skryptu startowego
 ENV TEMPLATEDIR /srv/templates

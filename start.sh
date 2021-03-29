@@ -1,33 +1,12 @@
 #!/bin/sh
 
-trap trapSignal HUP INT QUIT TERM
+# Ustawienie strefy czasowej
+if ! [[ -z "$TIME_ZONE" ]]; then
+  ln -sf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
+fi
 
-killproc() {
- PROC=$1
- 
- PID=$(pidof $PROC)
- kill $PID
- sleep 1
- $(pidof $PROC)
- if ! [ -z $? ]; then kill -9 $PID; fi
- $(pidof $PROC)
- if [ -z $? ]; then exit 1; else exit 0; fi
-}
-
-trapSignal() {
-  echo "Stopping httd..."
-  nginx stop
-  echo "Stopping dnsmasq..."
-  killproc dnsmasq
-}
-
-echo "Starting httpd..."
-nginx
-echo "Starting dhcp and tftp..."
-/usr/sbin/dnsmasq -C /etc/dnsmasq.conf -d &
-
-echo "[hit enter key to exit] or run 'docker stop <container>'"
-read
-
-trapSignal
-exit 0
+MONIT_OPT=-I
+if ! [[ -z "$DEBUG" ]]; then
+  MONIT_OPT="$MONIT_OPT -vvv"
+fi
+monit $MONIT_OPT
