@@ -18,4 +18,12 @@ if [[ -f /run/monit.pid ]]; then
   rm /run/monit.pid
 fi
 
+# kasowanie pid procesow monitorowanych
+if [[ -f /run/dnsmasq.pid ]]; then
+  rm /run/dnsmasq.pid
+fi
+if [[ -f /run/nginx.pid ]]; then
+  rm /run/nginx.pid
+fi
+
 monit $MONIT_OPT
