@@ -38,15 +38,18 @@ RUN apk --update --no-cache add --virtual .build-deps build-base perl git \
 
 ADD resolv.conf /etc/resolv.conf
 
+
 # Instalacja utils i dnsmasq 
+ADD dnsmasq/dnsmasq.conf $CONFDIR/dnsmasq/dnsmasq.conf
+ADD dnsmasq/dnsmasq_root.conf /etc/dnsmasq.conf
 RUN apk --no-cache add \
 # bash \
  tcpdump \
 # iproute2-ss \
 # bind-tools \
- dnsmasq
-ADD dnsmasq/dnsmasq.conf $CONFDIR/dnsmasq/dnsmasq.conf
-ADD dnsmasq/dnsmasq_root.conf /etc/dnsmasq.conf
+ dnsmasq \
+  && rm -rf /var/lib/misc/dnsmasq.leases \
+  && ln -sf $CONFDIR/dnsmasq/dnsmasq.leases /var/lib/misc/
 
 ADD nginx $CONFDIR/nginx
 RUN apk add --no-cache nginx \
