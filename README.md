@@ -1,3 +1,5 @@
+[![Build Status](https://drone.p.lodz.pl/api/badges/seweryn.sitarski@p.lodz.pl/boipxe/status.svg)](https://drone.p.lodz.pl/seweryn.sitarski@p.lodz.pl/boipxe)
+
 # boipxe
 Chainload iPXE for BlueOcean infrastructure
 
